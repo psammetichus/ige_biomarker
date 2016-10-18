@@ -14,6 +14,7 @@ def fAlphaPeak():
     pass
 
 def fBandPass(data,low,high,dt):
+    """bandpass the data with cutoff freqs low and high; dt is 1/samprate"""
     freqs = np.array([low,high]) * (dt*2) #half-cycles/sample
     b,a = scisig.butter(2, freqs, btype="bandpass")
     return scisig.filtfilt(b,a,data,1)
