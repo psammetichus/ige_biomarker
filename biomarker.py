@@ -53,13 +53,10 @@ def biomarker(eegdata, dt):
 
     #PLF and phase lag
     sr = 256
-    plf = np.zeros((nCH,nCH))
-    lag = np.zeros((nCH,nCH))
-    for m in range(nCH):
-        for n in range(nCH):
-            a = np.mean(np.exp(1j*(iphase[n,256:-256] - iphase[m,256:-256])))
-            plf[n,m] = np.absolute(a)
-            lag[n,m] = np.angle(a)
+    a = np.fromfunction(lambda n,m: np.mean(np.exp(1j*(iphase[n,25:-256]
+      - iphase[m,256:-256]))), (n,m))
+    plf[n,m] = np.absolute(a)
+    lag[n,m] = np.angle(a)
     
     meanDeg = np.mean(np.sum(plf))
     alpha = pass
