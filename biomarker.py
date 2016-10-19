@@ -4,15 +4,6 @@ import scipy.signal as scisig
 def sComputeMeasures():
     pass
 
-
-def sClassifyL00(n):
-    alpha = np.zeros(n)
-    meanDeg = np.zeros(n)
-    local = np.zeros(n, 19, 20)
-
-def fAlphaPeak():
-    pass
-
 def fBandPass(data,low,high,dt):
     """bandpass the data with cutoff freqs low and high; dt is 1/samprate"""
     freqs = np.array([low,high]) * (dt*2) #half-cycles/sample
@@ -25,7 +16,20 @@ def fAlphaPeak(data, o1chan, o2chan, dt):
     specO1 = fSpectrum(data[o1chan])
     specO2 = fSpectrum(data[o2chan])
     pass
-    
+
+def fSpectrum(eegdata, dt):
+    """computes freq spectrum"""
+    Fs = 1./dt
+    N = np.size(eegdata)
+    dF = Fs/N
+    f = np.arange(-Fs/2, Fs/2, dF)
+    signal = eegdata-mean(eegdata)
+    spectron = np.absolute(np.fft.fftshift(np.rfft(signal)))
+    return spectron,f[f>0]
+
+def fDespur(M):
+    connmatrix = np.ones(M.shape[0])
+    pass
 
 def biomarker(eegdata, dt):
     """computes alpha, meanDeg, and local coupling
@@ -59,5 +63,6 @@ def biomarker(eegdata, dt):
     lag[n,m] = np.angle(a)
     
     meanDeg = np.mean(np.sum(plf))
-    alpha = pass
+    alpha = fAlphaPeak(mydata,dt)
+    plfSparse = fDespur(plf[lag>0])
     
